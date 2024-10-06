@@ -1,17 +1,11 @@
 # Algoritem
 
-Vsak dobro definiran računski postopek, s katerim rešimo kak problem.
-Vhodne podatke spremeni v izhodne. Pozorni moramo biti na 3 stvari:
-
-1. pravilnost
-2. časovna zahtevnost (število korakov glede na velikost problema)
-3. prostorska zahtevnost (velikost problema)
-
-Vedno, ko ustvarimo delujoč algoritem, se moramo vprašati:
+Vsak dobro definiran računski postopek, s katerim rešimo kak problem
+Vhodne podatke spremeni v izhodne. Pozorni moramo biti na 4 stvari:
 
 1. ali pravilno deluje?
-2. kakšna je časovna zahtevnost?
-3. kakšna je prostorska zahtevnost
+2. kakšna je časovna zahtevnost? (število korakov glede na velikost problema)
+3. kakšna je prostorska zahtevnost (velikost problema)
 4. ali se da narediti bolje?
 
 >Delujoče ne pomeni pravilno.
@@ -30,11 +24,11 @@ Za primer bomo vzeli algoritem z vstavljanjem:
         A[i + 1] ← key
     end for
 
-Da algoritem pravilno deluje, dokažemo z invarianco. To je *izjava o stanju
-spremenljivk v algoritmu, ki velja za vse ponovitve (iteracije)*. Dokaz za
-loop lahko naredimo z indukcijo po zunanji zanki. To pomeni, če imamo znotraj
-loopa več loopov, gledamo samo zunanjega. BŠZS predpostavimo, da so elementi
-med sabo različni.
+Da algoritem pravilno deluje, ponavadi dokažemo z indukcijo.
+To je *izjava o stanju spremenljivk v algoritmu, ki velja za vse
+ponovitve (iteracije)*. Dokaz za loop lahko naredimo z indukcijo po
+zunanji zanki. To pomeni, če imamo znotraj loopa več loopov, gledamo
+samo zunanjega. BŠZS predpostavimo, da so elementi med sabo različni.
 
 ---
 
@@ -50,6 +44,9 @@ vsakim naslednjim `A[i]`). Ustavi se pri i-tem elementu in vstavi na to mesto. T
 so elemeti $a'_{1} < a'_{2} < ... < a'_{i} < key$ urejeni. ... in some bollocks.
 
 ## Časovna zahtevnost
+
+Časovna zahtevnost nam pove kako bo rasel čas potreben za izvedbo algoritma,
+s tem ko raste število vhodnih elementov.
 
 Naj bo $T_{A}(n)$ število izvedenih korakov algoritma $A$ pri vhodnih podatkih
 velikosti $n$. Funkciji $T$ rečemo *časovna zahtevnost (ali čas izvajanja)
@@ -81,7 +78,8 @@ v obratnem vrstnem redu).
 
 ### Najboljši primer
 
-Podatki so urejeni, torej velja $t_{j}=1$:
+Podatki so urejeni, torej velja $t_{j}=1$. Vsak element se primerja enkrat.
+Časovna zahtevnost je $O(n)$.
 
 $$
 \begin{align}
@@ -98,7 +96,8 @@ Vidimo, da je $T(n)$ linearna funkcija. V najboljšem primeru ima algoritem
 ### Najslabši primer
 
 Podatki so urejeni v obratnem vrstnem redu. Vsak loop se bodo izvedli
-vsi ukazi. Velja torej $t_{j} = j$.
+vsi ukazi. Velja torej $t_{j} = j$. Vsak element se primerja z vsakim.
+Časovna zahtevnost je $O(n^{2})$.
 
 $$
 \begin{align}
@@ -116,6 +115,16 @@ $$
 Ugl, zdaj je $T(n)$ kvadratna funkcija. Algoritem ima v najslabšem primeru
 **kvadratno časovno zahtevnost**.
 
+To pomeni, če se vhodni podatki podvojijo, se časovna zahtevnost
+poštiri.
+
+## Prostorska zahtevnost
+
+Dodatni potrebni spomin pri izvajanju. To je samo inicializacija spremenljivk
+i in j in key. Ker se vsako iteracijo inicializirajo enkrat, neodvisno od
+števila vhodnih podatkov, je prostorska zahtevnost v tem primeru
+**konstantna - $O(1)$**.
+
 ## Ali se da bolje?
 
 - z $n$ elementi obstaja $n!$ permutacij
@@ -130,11 +139,20 @@ permutacijo)
 Po neki enačbi od *Stirling*-a vemo, da je
 
 $$
-n! \approx \sqrt{2 \pi n} \left(\frac{n}{e}\right)^n \cdot C
+n! \approx \sqrt{2 \pi n} (\frac{n}{e})^n \cdot C
 $$
 
-To pomeni, da je $\log n$ potem:
+To pomeni, da je $\log n!$ potem:
 
 $$
 \log n! \approx n \log n + n \times C_{1}
 $$
+
+## Ocena velikosti funkcij
+
+Za oceno časovne kompleksnosti algoritmov si pomagamo z družinami funkcij:
+
+- $O$: upper-bound (worst case)
+- $\Omega$: lower-bound (best case)
+- $\Theta$: tight-bound (average case)
+
