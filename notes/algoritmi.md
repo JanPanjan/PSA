@@ -30,8 +30,6 @@ ponovitve (iteracije)*. Dokaz za loop lahko naredimo z indukcijo po
 zunanji zanki. To pomeni, če imamo znotraj loopa več loopov, gledamo
 samo zunanjega. BŠZS predpostavimo, da so elementi med sabo različni.
 
----
-
 1. **Baza indukcije:** če je samo en element ($a_{1}$), je polje urejeno.
 
 2. **Hipoteza:** predpostavimo, da algoritem uredi elemente
@@ -156,51 +154,84 @@ Za oceno časovne kompleksnosti algoritmov si pomagamo z družinami funkcij:
 - $\Omega$: lower-bound (best case)
 - $\Theta$: tight-bound (average case)
 
+### Veliki $O$
 
+Če je neka $f(n) = O(g(n))$, potem rečemo, da $g(n)$ **asimptotično od
+zgoraj omejuje $f(n)$**. Vrednosti $f(n)$ nikoli ne bodo presegle
+vrednosti $O(g(n))$ od nekega $n$ dalje.
 
+$$
+O(g(n)) = \{ f(n) ; (\exists c>0)(\exists n_{0} \in N)(\forall n)
+(n>=n_{0} \Rightarrow f(n) <= c \times g(n))\}
+$$
 
-█ ███████████████████████████████████████████████████████████████████████████████████████████  █
-█                                                                                              █
-██                                                                                             █
-██                                    █████████ ███████████ █                                  █
-██                                        █                                                    █
-█                                                                                              █
-█                                                                                              █
-██                             ██ █  ██                                                        █
-██                            ███████  █                                                       █
-█          ██                      █                                                           █
-█          ██                     ██                                                           █
-█          ██                     ██                                                           █
-█          ██                     ██                                                           █
-█          ██                     █                                                            █
-█          ██                     █                                                            █
-█          ██                     █                                                            █
-█          ██                     █                                                            █
-█          ██                     █                                         ████  █            █
-█          ██                     █                                      ██ ███████            █
-█      ██  ██                    ██                                   ███                      █
-█       █  ██                    █                                 ███                         █
-█       █  ██                    █                              ███                            █
-█          ██                   ██                           ███                               █
-█      ██  ██                   █                         ███                                  █
-█      █   ██                   █                      ███                                     █
-█     ███  ██                  ██                   ███                                        █
-█     █    ██                  █                 ███                                           █
-█          ██                 ██              ███                                              █
-██         ██                 █            ███                             ██████████ ███      █
-██         ██                █          ███    ██████████                     ██   ██   █      █
-██         ██               ██       █████                                                     █
-██         ██               █████ ███                                                          █
-██         ██           ████   ███                                                             █
-██         ██        ██   █ ███                                                                █
-█          ██     ██     ███                                                ███████            █
-██         ██   █     ███                                                    ███ ███           █
-██         ██ ██   ████                                                                        █
-██         ███  █████                                                                          █
-██         ████████                                                                            █
-██         ████████████████████████████████████████████████████████████████                    █
-██                                                                                             █
-██                                  ███████ ██████  █████                                      █
-██                                                                                             █
-██                                                                                             █
-████████████████████████████████████████████████████████████████████████████████████████████████
+### Mali $o$
+
+Če je neka $f(n) = o(g(n))$, potem je $f(n)$ **vedno manjša kot $g(n)$**, ko
+večamo $n$.
+
+$$
+o(g(n)) = \{ \ f(n) ; (\exists c>0)(\exists n_{0} > 0)(\forall n \geq n_{0})
+(f(n) < c \times g(n)) \ \}
+$$
+
+Enakovredna definicija:
+
+$$
+\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 0
+$$
+
+### Velika $\Omega$
+
+Če je neka $f(n) = \Omega(g(n))$, potem rečemo, da $g(n)$ **asimptotično od
+spodaj omejuje $f(n)$**. Vrednosti $f(n)$ bodo vedno presegale vrednosti
+$\Omega(g(n))$ od nekega $n$ dalje.
+
+$$
+\Omega(g(n)) = \{ f(n) ; (\exists c>0)(\exists n_{0} \in N)
+(\forall n)(n \geq n_{0} \Rightarrow f(n) >= c \times g(n))\}
+$$
+
+### Velika $\Theta$
+
+Če je neka $f(n) = \Theta(g(n))$, potem rečemo, da je $f(n)$ **asimptotično
+omejena z g(n)**.
+
+$$
+\Theta(g(n)) = \{ \ f(n) ; (\exists c_{1}, c_{2}, n_{0})
+(\forall n \ge n_{0} \Rightarrow c_{1}f(n) \ge c_{2}g(n)) \ \}
+$$
+
+To je enakovredno enačbi:
+
+$$
+f(n) = O(g(n)) \land ( \ f(n) = \Omega(g(n)) \equiv f(n) = \Theta(g(n)) \ )
+$$
+
+### Mali $\omega$
+
+Če je neka $f(n) = \omega(g(n))$, potem je $f(n)$ **vedno večja kot $g(n)$**, ko
+večamo $n$.
+
+$$
+\omega(g(n)) = \{ \ f(n) ; (\exists c>0)(\exists n_{0} > 0)(\forall n \geq n_{0})
+(f(n) > c \times g(n)) \ \}
+$$
+
+Enakovredna definicija:
+
+$$
+\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty
+$$
+
+## Intuitivni pomen funkcij
+
+$$
+\begin{align}
+f(n) &= \omega(g(n)) \approx f(n) > g(n) \\
+f(n) &= \Omega(g(n)) \approx f(n) \ge g(n) \\
+f(n) &= \Theta(g(n)) \approx f(n) = g(n) \\
+f(n) &= O(g(n)) \approx f(n) \le g(n) \\
+f(n) &= o(g(n)) \approx f(n) < g(n) \\
+\end{align}
+$$
