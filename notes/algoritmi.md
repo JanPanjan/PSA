@@ -53,14 +53,14 @@ velikosti $n$. Funkciji $T$ rečemo *časovna zahtevnost (ali čas izvajanja)
 algoritma $A$*. Predpostavljali bomo, da za izvajanje vsakega koraka
 potrebujemo konsntanto veliko časa (izajanje i-te vrstice zahteva $c_{i}$ časa).
 
-    for j ← 2 to A.length do                c1
-        key ← A[j]                          c2
-        i ← j − 1                           c3
-        while i > 0 and A[i] > key do       c4
-            A[i + 1] ← A[i]                 c5
-            i ← i − 1                       c6
+    for j ← 2 to A.length do                c1  n
+        key ← A[j]                          c2  n - 1
+        i ← j − 1                           c3  n - 1
+        while i > 0 and A[i] > key do       c4  $\sum_{i=2}^n t_{i}$
+            A[i + 1] ← A[i]                 c5  $\sum_{i=2}^n (t_{i}-1)$
+            i ← i − 1                       c6  $\sum_{i=2}^n (t_{i}-1)$
         end while
-        A[i + 1] ← key                      c8
+        A[i + 1] ← key                      c8  n - 1
     end for
 
 Velja, da je$n$ dolžina niza $A$, $t_{j}$ naj bo število ponovitev zanke
@@ -156,3 +156,51 @@ Za oceno časovne kompleksnosti algoritmov si pomagamo z družinami funkcij:
 - $\Omega$: lower-bound (best case)
 - $\Theta$: tight-bound (average case)
 
+
+
+
+█ ███████████████████████████████████████████████████████████████████████████████████████████  █
+█                                                                                              █
+██                                                                                             █
+██                                    █████████ ███████████ █                                  █
+██                                        █                                                    █
+█                                                                                              █
+█                                                                                              █
+██                             ██ █  ██                                                        █
+██                            ███████  █                                                       █
+█          ██                      █                                                           █
+█          ██                     ██                                                           █
+█          ██                     ██                                                           █
+█          ██                     ██                                                           █
+█          ██                     █                                                            █
+█          ██                     █                                                            █
+█          ██                     █                                                            █
+█          ██                     █                                                            █
+█          ██                     █                                         ████  █            █
+█          ██                     █                                      ██ ███████            █
+█      ██  ██                    ██                                   ███                      █
+█       █  ██                    █                                 ███                         █
+█       █  ██                    █                              ███                            █
+█          ██                   ██                           ███                               █
+█      ██  ██                   █                         ███                                  █
+█      █   ██                   █                      ███                                     █
+█     ███  ██                  ██                   ███                                        █
+█     █    ██                  █                 ███                                           █
+█          ██                 ██              ███                                              █
+██         ██                 █            ███                             ██████████ ███      █
+██         ██                █          ███    ██████████                     ██   ██   █      █
+██         ██               ██       █████                                                     █
+██         ██               █████ ███                                                          █
+██         ██           ████   ███                                                             █
+██         ██        ██   █ ███                                                                █
+█          ██     ██     ███                                                ███████            █
+██         ██   █     ███                                                    ███ ███           █
+██         ██ ██   ████                                                                        █
+██         ███  █████                                                                          █
+██         ████████                                                                            █
+██         ████████████████████████████████████████████████████████████████                    █
+██                                                                                             █
+██                                  ███████ ██████  █████                                      █
+██                                                                                             █
+██                                                                                             █
+████████████████████████████████████████████████████████████████████████████████████████████████
