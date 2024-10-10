@@ -205,7 +205,7 @@ $$
 To je enakovredno enačbi:
 
 $$
-f(n) = O(g(n)) \land ( \ f(n) = \Omega(g(n)) \equiv f(n) = \Theta(g(n)) \ )
+( \ f(n) = O(g(n)) \land f(n) = \Omega(g(n)) \ ) \Leftrightarrow f(n) = \Theta(g(n))
 $$
 
 ### Mali $\omega$
