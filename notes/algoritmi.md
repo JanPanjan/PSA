@@ -10,19 +10,43 @@ Vhodne podatke spremeni v izhodne. Pozorni moramo biti na 4 stvari:
 
 >Delujoče ne pomeni pravilno.
 
+Za primer bomo vzeli algoritem z vstavljanjem ali *insertion sort*. Algoritem je 
+učinkovit za delo z malo podatki.
+
+    1:  for j ← 2 to A.length do
+    2:      key ← A[j]
+    3:      i ← j − 1
+    4:      while i > 0 and A[i] > key do
+    5:          A[i + 1] ← A[i]
+    6:          i ← i − 1
+    7:      end while
+    8:      A[i + 1] ← key
+    9:  end for
+
+## Kako algoritem deluje
+
+Naj bo $A = \{5,2,4,6,1,3\}$ seznam števil. Indeks *i* označuje trenutno 
+karto iz seznama *A* , ki bo evaluirana. Na začetku vsake iteracije for loopa
+je podseznam elementov $A[1:i-1]$ sestavljen iz trenutno sortiranih kart.
+Podseznam $A[i+1:n]$ ($n$ = število elementov) je sestavljen iz kart seznama A,
+ki še niso nujno sortirane.
+
+Te lastnosti opišemo formalno z **zančno invarianco**:
+
+> *Na začetku vsake iteracije for loopa je podseznam $A[1:i-1]$ sestavljen iz
+> elementov prvotno v $A[1:i-1]$, a v sortiranem vrstnem redu.*
+
+Zančna invarianca nam pomaga razumeti zakaj je nek algoritem korekten. Ko 
+uporabljamo ta pristop opisa, moramo biti pozorni na tri stvari:
+
+1. **inicializacija** : drži pred prvo iteracijo loopa
+2. **maintenance** : če drži pred začetkom iteracije loopa, potem bo veljal
+o pred naslednjo
+iteracijo
+3. **terminacija** : loop se ustavi in s tem poda podatek o tem, zakaj je
+algoritem veljaven.
+
 ## Pravilnost delovanja
-
-Za primer bomo vzeli algoritem z vstavljanjem:
-
-    for j ← 2 to A.length do
-        key ← A[j]
-        i ← j − 1
-        while i > 0 and A[i] > key do
-            A[i + 1] ← A[i]
-            i ← i − 1
-        end while
-        A[i + 1] ← key
-    end for
 
 Da algoritem pravilno deluje, ponavadi dokažemo z indukcijo.
 To je *izjava o stanju spremenljivk v algoritmu, ki velja za vse
@@ -38,8 +62,9 @@ $a_{1}, a_{2}, ... , a_{j-1} \Rightarrow a'_{1}, a'_{2}, ... , a'_{j-1}$.
 3. **Indukcijski korak:** imamo neko polje elementov $a_{1}, a_{2}, ... , a_{j}$.
 Prvih $j-1$ po predpostavki znamo urediti v $a'_{i}$. While zanka se izvaja
 dokler je `key` manjši (key je `A[j]`, torej prvi pivot, primerjamo ga z
-vsakim naslednjim `A[i]`). Ustavi se pri i-tem elementu in vstavi na to mesto. Tedaj
-so elemeti $a'_{1} < a'_{2} < ... < a'_{i} < key$ urejeni. ... in some bollocks.
+vsakim naslednjim `A[i]`). Ustavi se pri i-tem elementu in vstavi na to mesto. 
+Tedaj so elemeti $a'_{1} < a'_{2} < ... < a'_{i} < key$ urejeni. ... in 
+some bollocks.
 
 ## Časovna zahtevnost
 
