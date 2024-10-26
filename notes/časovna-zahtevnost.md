@@ -132,33 +132,6 @@ se časovna zahtevnost poštiri.
 Pogledali smo najbolši in najslabši čas izvajana. Lahko rečemo, da ima
 insertion sort najboljši čas izvajanja $\Theta(n)$ in najslabši čas $\Theta(n^2)$.
 
-Glej naprej za podrobne definicije.
-
-## Ali se da bolje?
-
-> # Glej *designing algorithms na strani 34*.
-
-- z $n$ elementi obstaja $n!$ permutacij
-- vsak algoritem za urejanje mora znati urediti vsako permutacijo
-- z drugimi besedami, poiskati mora vsako permutacijo
-- računanja algoritma si lahko predstavljamo kot drevo, kjer so listi
-najdene permutacije in notranja vozlišča primerjave znotraj algoritma
-- pri danem $A$ sledi izvajanje algoritma eni poti do lista (imamo eno
-permutacijo)
-- višina drevesa je najkrajši čas potreben za urejanje in je $\log n$
-
-Po neki enačbi od *Stirling*-a vemo, da je
-
-$$
-n! \approx \sqrt{2 \pi n} (\frac{n}{e})^n \cdot C
-$$
-
-To pomeni, da je $\log n!$ potem:
-
-$$
-\log n! \approx n \log n + n \times C_{1}
-$$
-
 ## Ocena velikosti funkcij
 
 Za oceno časovne kompleksnosti algoritmov si pomagamo z družinami funkcij:
@@ -167,64 +140,76 @@ Za oceno časovne kompleksnosti algoritmov si pomagamo z družinami funkcij:
 - $\Omega$: lower-bound (best case)
 - $\Theta$: tight-bound (average case)
 
-### Veliki $O$
+###  $O-$notacija
 
 Če je neka $f(n) = O(g(n))$, potem rečemo, da $g(n)$ **asimptotično od
 zgoraj omejuje $f(n)$**. Vrednosti $f(n)$ nikoli ne bodo presegle
-vrednosti $O(g(n))$ od nekega $n$ dalje.
+vrednosti $O(g(n))$ od nekega $n$ dalje. 
 
 $$
 O(g(n)) = \{ f(n) ; (\exists c>0)(\exists n_{0} \in N)(\forall n)
 (n>=n_{0} \Rightarrow f(n) <= c \times g(n))\}
 $$
 
-### Mali $o$
+---
+
+$O-$notacija opisuje zgornjo 
+mejo asimptotičnega obnašanja funkcij (kako se funkcija obnaša, ko $n$ raste). 
+Z drugimi besedami, funkcije ne raste hitreje
+kot največji člen v enačbi. 
+
+Npr. $7n^3 + 100n^2 + 20n + 6$ ima $7n^3$ kot največji člen, zato lahko 
+opišemo naraščanje funkcije kot $n^3$. Ker funkcija ne raste hitreje kot 
+$n^3$ (torej je $n^3$ zgornja meja), pišemo $O(n^3)$. Lahko rečemo tudi, da ne
+raste hitreje kot $n^4$, torej je $O(n^4)$ itn., torej je bolj generično rečeno,
+da je $O(n^c)$ za vsak $c \geq 3$.
+
+####  $o-$notacija
 
 Če je neka $f(n) = o(g(n))$, potem je $f(n)$ **vedno manjša kot $g(n)$**, ko
-večamo $n$.
+večamo $n$. Ker $O-$notacija govori o neki konstanti $c > 0$ in pogoju
+$f(n) \leq c \cdot g(n)$, to pomeni, da $\exists c_{0} > 0: f(n) = c_{0} \cdot g(n)$
+
+Obstaja $c_{0}$, kjer sta funkciji enaki, torej $O(n)$ ni *tight-bound* - zato smo 
+uvedli mali $o$, ki pa je *tight-bound*.
 
 $$
 o(g(n)) = \{ \ f(n) ; (\exists c>0)(\exists n_{0} > 0)(\forall n \geq n_{0})
 (f(n) < c \times g(n)) \ \}
 $$
 
-Enakovredna definicija:
+Prav tako funkcija $f(n)$ postane ničvredna proti $g(n)$, ko postane $n$ velik
+(zaradi konstante $c$), zato:
 
 $$
 \lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 0
 $$
 
-### Velika $\Omega$
+###  $\Omega-$notacija
 
 Če je neka $f(n) = \Omega(g(n))$, potem rečemo, da $g(n)$ **asimptotično od
 spodaj omejuje $f(n)$**. Vrednosti $f(n)$ bodo vedno presegale vrednosti
-$\Omega(g(n))$ od nekega $n$ dalje.
+$\Omega(g(n))$ od nekega $n$ dalje. 
 
 $$
 \Omega(g(n)) = \{ f(n) ; (\exists c>0)(\exists n_{0} \in N)
-(\forall n)(n \geq n_{0} \Rightarrow f(n) >= c \times g(n))\}
+(\forall n)(n \geq n_{0} \Rightarrow f(n) \geq c \times g(n))\}
 $$
 
-### Velika $\Theta$
+---
 
-Če je neka $f(n) = \Theta(g(n))$, potem rečemo, da je $f(n)$ **asimptotično
-omejena z g(n)**.
+Obratno kot $O$ notacija, neka funkcija raste vedno počasneje kot največji člen. 
+Za isto enačbo kot prej, je torej $\Omega(n^3)$ in tudi $\Omega(n^2)$ (vedno raste 
+počasneje kot $n^2$), torej rečemo, da je $\Omega(n)$ za vsak $c \leq 3$.
 
-$$
-\Theta(g(n)) = \{ \ f(n) ; (\exists c_{1}, c_{2}, n_{0})
-(\forall n \ge n_{0} \Rightarrow c_{1}f(n) \ge c_{2}g(n)) \ \}
-$$
+> Naš primer: $7n^3 + 100n^2 + 20n + 6$ je istočasno $O(n^3)$ in $\Omega(n^3)$, zato
+> je tudi $\Theta(n^3)$.
 
-To je enakovredno enačbi:
-
-$$
-( \ f(n) = O(g(n)) \land f(n) = \Omega(g(n)) \ ) \Leftrightarrow f(n) = \Theta(g(n))
-$$
-
-### Mali $\omega$
+####  $\omega-$notacija
 
 Če je neka $f(n) = \omega(g(n))$, potem je $f(n)$ **vedno večja kot $g(n)$**, ko
-večamo $n$.
+večamo $n$. Podobno je $\omega-$notacija notaciji $\Omega$ to, kar je $o-$notacija
+notaciji $O$.
 
 $$
 \omega(g(n)) = \{ \ f(n) ; (\exists c>0)(\exists n_{0} > 0)(\forall n \geq n_{0})
@@ -235,6 +220,23 @@ Enakovredna definicija:
 
 $$
 \lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty
+$$
+
+###  $\Theta-$notacija
+
+Če je neka $f(n) = \Theta(g(n))$, potem rečemo, da je $f(n)$ **asimptotično
+omejena z g(n)**. Z drugimi besedami, če lahko pokažemo, da velja za neko funkcijo
+$T(n)$, da je $T(n) \equiv O(f(n) \land T(n) \equiv \Omega(n) \Rightarrow T(n) \equiv \Theta(n)$
+
+$$
+\Theta(g(n)) = \{ \ f(n) ; (\exists c_{1}, c_{2}, n_{0})
+(\forall n \ge n_{0} \Rightarrow c_{1}f(n) \ge c_{2}g(n)) \ \}
+$$
+
+To je enakovredno enačbi:
+
+$$
+( \ f(n) = O(g(n)) \land f(n) = \Omega(g(n)) \ ) \Leftrightarrow f(n) = \Theta(g(n))
 $$
 
 ## Intuitivni pomen funkcij
