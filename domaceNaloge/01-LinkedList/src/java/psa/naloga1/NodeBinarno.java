@@ -31,6 +31,10 @@ public class NodeBinarno {
 	}
 
 	public boolean insert(int element) {
+     // element je v seznamu, zato ga ne vstavimo
+     if (this.getKey() == element) {
+         return false;
+ }
 		// če je manjši gremo levo
 //		System.out.println("--- insert:");
 		System.out.println(element);
