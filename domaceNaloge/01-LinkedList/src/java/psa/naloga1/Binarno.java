@@ -22,11 +22,6 @@ public class Binarno {
 			return true;
 		}
 
-		// če je v drevesu, ne vstavljamo
-		if (this.root.search(element)) {
-			return false;
-		}
-
 		// vstavimo v levo ali desno poddrevo
 		return this.root.insert(element);
 	}
