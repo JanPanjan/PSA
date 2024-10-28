@@ -31,7 +31,7 @@ predstavitev ključev:
 | N | 01110 | O | 01111 |
 | P | 10000 | R | 10010 |
 | S | 10011 | X | 11000 |
-| Z | 11010 |
+| Z | 11010 |   |       |
 
 Imejmo ključe $\{A,C,E,G,H,I,L,M,R,S\}$. Na polagi te množice izgradimo
 podatkovno strukturo.
