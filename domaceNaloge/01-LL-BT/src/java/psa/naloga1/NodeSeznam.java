@@ -34,7 +34,7 @@ public class NodeSeznam {
 	public boolean search(NodeSeznam node) {
 		NodeSeznam current = this;
 
-		if (current.key == node.key) {
+		if (current.compare(node) == 0) {
 			return true;
 		}
 		if (current.rep == null) {

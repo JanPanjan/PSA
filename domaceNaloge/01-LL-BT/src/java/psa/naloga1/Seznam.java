@@ -48,18 +48,27 @@ public class Seznam {
 	public boolean delete(int element) {
 		NodeSeznam nodeToBeDeleted = new NodeSeznam(element);
 
-		if (head.getKey() == element) {
-			head = head.rep;
-			return true;
+		if (head.compare(nodeToBeDeleted) == 0) {
+				head = head.rep;
+				return true;
 		}
 
 		NodeSeznam current = this.head;
 		NodeSeznam previous = null;
 
-		while (current != null && current.getKey() != element) {
+		// ko najdemo node z null repom, smo prišli do konca seznama
+		// prav tako, ko smo našli node s pravim elementom, smo prišli do tam kamor moramo prit
+		while (current != null && current.compare(nodeToBeDeleted) != 0) {
+			System.out.println("(delete)(compare): " + (current.compare(nodeToBeDeleted) == 0));
+			System.out.println("(current.key): " + current.getKey());
+			System.out.println("(nodeToBeDeleted.key): " + nodeToBeDeleted.getKey());
+
 			previous = current;
 			current = current.rep;
 		}
+		System.out.println("(delete)(compare): " + (current.compare(nodeToBeDeleted) == 0));
+		System.out.println("(current.key): " + current.getKey());
+		System.out.println("(nodeToBeDeleted.key): " + nodeToBeDeleted.getKey());
 
 		if (current != null) {
 			previous.rep = current.rep;

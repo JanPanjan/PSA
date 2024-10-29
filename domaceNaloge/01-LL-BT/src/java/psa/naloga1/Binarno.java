@@ -20,14 +20,16 @@ public class Binarno {
 	 * Metoda vrne true, ce je bil element uspesno vstavljen in false sicer.
 	 */
 	public boolean insert(int element) {
+		NodeBinarno nodeToBeInserted = new NodeBinarno(element);
+
 		// drevo ne obstaja, zato ga ustvarimo
 		if (root == null) {
-			root = new NodeBinarno(element);
+			this.setRoot(nodeToBeInserted);
 			return true;
 		}
 
 		// vstavimo v levo ali desno poddrevo
-		return this.root.insert(element);
+		return this.root.insert(nodeToBeInserted);
 	}
 
 	/*
@@ -37,13 +39,14 @@ public class Binarno {
 	 * je že večji od brisanega elementa (torej z minimalnim elementom v desnem poddrevesu)
 	 */
 	public boolean search(int element) {
+		NodeBinarno nodeToBeFound = new NodeBinarno(element);
+
 		// drevo je prazno, ni elementov
 		if (this.root == null) {
 			return false;
 		}
 
-		System.out.println(element);
-		return this.root.search(element);
+		return this.root.search(nodeToBeFound);
 	}
 
 	/*
@@ -51,6 +54,8 @@ public class Binarno {
 	 * Metoda vrne true, ce je bil element uspesno najden v drevesu, in false sicer
 	 */
 	public boolean delete(int element) {
+		NodeBinarno nodeToBeDeleted = new NodeBinarno(element);
+
 		// drevo je prazno, ni elementov
 		if (root == null) {
 			return false;
@@ -59,31 +64,26 @@ public class Binarno {
 		// začnemo pri root
 		NodeBinarno parent = null;
 		NodeBinarno current = this.getRoot();
-		int key = current.getKey();
 
 		// Najdemo node z elementom, ki ga želimo izbrisati
-		while (key != element) {
+		// moramo se premakniti v enega od dveh repov glede na isakni ključ
+		// če elementa ni, je current null (ni poddrevesa)
+		while (current.compare(nodeToBeDeleted) != 0) {
 			parent = current;
 
 			// ----- levo -----
-			if (element < key) {
-				// če elementa ni, je current null (ni poddrevesa)
+			if (current.compare(nodeToBeDeleted) < 0) {
 				if (current.getLevi() == null) {
 					return false;
 				}
-				// iščemo v levem repu
 				current = current.getLevi();
-				key = current.getKey();
 			}
 			// ----- desno -----
 			else {
-				// če elementa ni, je current null (ni poddrevesa)
 				if (current.getDesni() == null) {
 					return false;
 				}
-				// iščemo v desnem repu
 				current = current.getDesni();
-				key = current.getKey();
 			}
 		}
 
@@ -108,10 +108,10 @@ public class Binarno {
 		// CASE b: drevo ima enega naslednika
 		if (current.getLevi() != null || current.getDesni() != null) {
 			// najdemo naslednika
-			// (member C conditionals)
-			NodeBinarno child = current.getLevi() == null ? current.getDesni() : current.getLevi();
+			// (remember C conditionals)
+			NodeBinarno child = current.getLevi() != null ?  current.getLevi() : current.getDesni();
 
-			// root je node, ki ga moramo izbrisati
+			// root je edini brez starša
 			if (parent == null) {
 				this.root.setKey(child.getKey());
 				this.root.setLevi(child.getLevi());
