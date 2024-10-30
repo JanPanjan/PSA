@@ -13,6 +13,4 @@
 
 [deli-in-vladaj.md](notes/deli-in-vladaj.md) 
 
----
-
 [matematične-osnove.md](notes/matematične-osnove.md) 
