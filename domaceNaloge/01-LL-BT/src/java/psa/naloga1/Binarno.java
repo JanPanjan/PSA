@@ -15,6 +15,30 @@ public class Binarno {
 		return this.root;
 	}
 
+	public void vmesniPregled() {
+		if (root == null) {
+			System.out.println("null");
+			return;
+		}
+		root.vmesniPregled();
+	}
+
+	public void premiPregled() {
+		if (root == null) {
+			System.out.println("null");
+			return;
+		}
+		root.obratniPregled();
+	}
+
+	public void obratniPregled() {
+		if (root == null) {
+			System.out.println("null");
+			return;
+		}
+		root.obratniPregled();
+	}
+
 	/*
 	 * Metoda sprejme celo stevilo in ga vstavi v drevo. Ce element ze obstaja v drevesu, vrne false
 	 * Metoda vrne true, ce je bil element uspesno vstavljen in false sicer.
@@ -27,7 +51,6 @@ public class Binarno {
 			this.setRoot(nodeToBeInserted);
 			return true;
 		}
-
 		// vstavimo v levo ali desno poddrevo
 		return this.root.insert(nodeToBeInserted);
 	}
@@ -45,7 +68,6 @@ public class Binarno {
 		if (this.root == null) {
 			return false;
 		}
-
 		return this.root.search(nodeToBeFound);
 	}
 
@@ -60,7 +82,6 @@ public class Binarno {
 		if (root == null) {
 			return false;
 		}
-
 		// začnemo pri root
 		NodeBinarno parent = null;
 		NodeBinarno current = this.getRoot();
@@ -93,7 +114,6 @@ public class Binarno {
 			if (parent == null) {
 				this.setRoot(null);
 			}
-
 			else if (parent.getLevi() == current) {
 				parent.setLevi(null);
 			}

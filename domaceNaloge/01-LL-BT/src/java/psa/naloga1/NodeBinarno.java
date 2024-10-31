@@ -38,14 +38,49 @@ public class NodeBinarno {
         this.key = newKey;
     }
 
-    public boolean insert(NodeBinarno node) {
-        // če je v drevesu, ne vstavljamo
-        if (this.compare(node) == 0) {
-            return false;
+    public void vmesniPregled() {
+        if (this.getLevi() != null) {
+            this.getLevi().vmesniPregled();
         }
 
+        System.out.print(this.getKey() + "-");
+
+        if (this.getDesni() != null) {
+            this.getDesni().vmesniPregled();
+        }
+    }
+
+    public void premiPregled() {
+        System.out.print(this.getKey() + "-");
+
+        if (this.getLevi() != null) {
+            this.getLevi().vmesniPregled();
+        }
+        if (this.getDesni() != null) {
+            this.getDesni().vmesniPregled();
+        }
+    }
+
+    public void obratniPregled() {
+        if (this.getLevi() != null) {
+            this.getLevi().vmesniPregled();
+        }
+        if (this.getDesni() != null) {
+            this.getDesni().vmesniPregled();
+        }
+
+        System.out.print(this.getKey() + "-");
+    }
+
+    public boolean insert(NodeBinarno node) {
+        int comparisson = this.compare(node);
+
+        // če je v drevesu, ne vstavljamo
+        if (comparisson == 0) {
+            return false;
+        }
         // če je manjši gremo levo
-        if (this.compare(node) < 0) {
+        else if (comparisson < 0) {
             // če je levo null, vstavimo novi element
             if (this.levi == null) {
                 this.levi = node;
@@ -55,7 +90,7 @@ public class NodeBinarno {
             this.levi.insert(node);
         }
         // če je večji gremo desno
-        if (this.compare(node) > 0) {
+        else {
             // če je desno null, vstavimo novi element
             if (this.desni == null) {
                 this.desni = node;
@@ -70,13 +105,15 @@ public class NodeBinarno {
     }
 
     public boolean search(NodeBinarno node) {
+        int comparisson = this.compare(node);
+
         // našli smo element v vozlišču
-        if (this.compare(node) == 0) {
+        if (comparisson == 0) {
             return true;
         }
 
         // gledamo v levo poddrevo
-        if (this.compare(node) < 0) {
+        if (comparisson < 0) {
             // če je null, nismo našli elementa
             if (this.levi == null) {
                 return false;
@@ -85,7 +122,6 @@ public class NodeBinarno {
                 return this.levi.search(node);
             }
         }
-
         // gledamo v desno poddrevo
         else {
             // če je null, nismo našli elementa

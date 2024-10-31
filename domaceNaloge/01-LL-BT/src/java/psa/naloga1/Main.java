@@ -87,11 +87,35 @@ public class Main {
         binarno.insert(8);
         binarno.insert(3);
 
+        System.out.print("(vmesni):");
+        binarno.vmesniPregled();
+        System.out.println();
+
+        System.out.print("(premi):");
+        binarno.premiPregled();
+        System.out.println();
+
+        System.out.print("(obratni):");
+        binarno.obratniPregled();
+        System.out.println();
+
         assertTrue(binarno.search(3));
         assertFalse(binarno.search(10));
 
         binarno.delete(4);
         assertFalse(binarno.search(4));
+
+        System.out.print("(vmesni):");
+        binarno.vmesniPregled();
+        System.out.println();
+
+        System.out.print("(premi):");
+        binarno.premiPregled();
+        System.out.println();
+
+        System.out.print("(obratni):");
+        binarno.obratniPregled();
+        System.out.println();
     }
 
     public static void main(String[] args) {
