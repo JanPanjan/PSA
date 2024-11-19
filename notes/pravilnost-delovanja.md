@@ -30,8 +30,7 @@ moramo biti pozorni na tri stvari:
 
 1. **initializaction** : drži pred prvo iteracijo loopa
 2. **maintenance** : če drži pred začetkom iteracije loopa, potem bo veljal
-o pred naslednjo
-iteracijo
+o pred naslednjo iteracijo
 3. **termination** : loop se ustavi in s tem poda podatek o tem, zakaj je
 algoritem veljaven.
 

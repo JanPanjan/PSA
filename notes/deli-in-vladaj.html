@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>deli-in-vladaj</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="deli-in-vladaj_files/libs/clipboard/clipboard.min.js"></script>
+<script src="deli-in-vladaj_files/libs/quarto-html/quarto.js"></script>
+<script src="deli-in-vladaj_files/libs/quarto-html/popper.min.js"></script>
+<script src="deli-in-vladaj_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="deli-in-vladaj_files/libs/quarto-html/anchor.min.js"></script>
+<link href="deli-in-vladaj_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="deli-in-vladaj_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="deli-in-vladaj_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="deli-in-vladaj_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="deli-in-vladaj_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="deli-in-vladaj-ali-divide-and-conquer" class="level1">
+<h1>Deli-in-vladaj ali divide-and-conquer</h1>
+<p>Večino uporabnih algoritmov je rekurzivnih, kar pomeni, da se kličejo znotraj sebe, da rešijo celoten problem tako, da vsak klic reši svoj del problema, zato so ponavadi ti algoritmi vrste <strong>deli-in-vladaj</strong>.</p>
+<p>Problem razbijejo na manjše probleme, ki so podobni prvotnemu problemu, le da dela algoritem z manj podatki. Na koncu združijo rešitve, da rešijo prvotni problem.</p>
+<p>Če je problem dovolj majhen (ko nastopi <strong>base case</strong>), se reši brez rekurzije. Drugače se rekurzivni klic deli na 3 dele:</p>
+<ol type="1">
+<li><strong>divide the problem</strong> na subprobleme, ki so manjši deli celega problema</li>
+<li><strong>conquer the subproblems</strong> tako, da jih reši rekurzivno</li>
+<li><strong>combine the subproblem solutions</strong>, da se ustvari rešitev za cel problem</li>
+</ol>
+<section id="merge-sort" class="level2">
+<h2 class="anchored" data-anchor-id="merge-sort">Merge sort</h2>
+<p>Merge sort algoritem deluje po teh smernicah. V vsakem koraku sortira podseznam <span class="math inline">\(A[p:r]\)</span>, tako da začne z <span class="math inline">\(A[1:n]\)</span> in dela naprej z vse manjšimi podseznami. Potek izgleda tako:</p>
+<ol type="1">
+<li><p><strong>Divide:</strong> Podseznam <span class="math inline">\(A[p:r]\)</span> razdeli na dva sorazmerna podseznama, vsak na polovico prvotne velikosti. To naredi tako, da najde središčno točko (povprečje med <span class="math inline">\(p\)</span> in <span class="math inline">\(r\)</span>, ki naj bo <span class="math inline">\(q\)</span>), nato pa razdeli s pomočjo te točke v podseznama <span class="math inline">\(A[p:q]\)</span> in <span class="math inline">\(A[q+1:r]\)</span>.</p></li>
+<li><p><strong>Conquer</strong> Oba podseznama sortira rekurzivno z Merge sort metodo.</p></li>
+<li><p><strong>Combine</strong> Podseznama združi nazaj v <span class="math inline">\(A[p:r]\)</span> v pravem vrstnem redu, posledično vrne urejen seznam in odgovor.</p></li>
+</ol>
+<hr>
+<p>Rekurzija doseže base case, ko je podseznam, ki se mora sortirati, velikosti 1, torej ima samo en element. To se zgodi, ko je <span class="math inline">\(p=r\)</span>. Kot smo videli v invarianci <em>insertion-sort</em>, je seznam dolžine 1 vedno urejen.</p>
+<p>Ključni del algoritma je v <em>combine</em> ali <em>merge</em> koraku, kjer se dva podseznama združita.</p>
+<section id="analogija-s-kartami" class="level3">
+<h3 class="anchored" data-anchor-id="analogija-s-kartami">Analogija s kartami</h3>
+<p>Naj imamo na mizi dva kupa kart, obrnjene tako, da vidimo njihove vrednosti. Vsak kup je sortiran, z najmanjšo vrednostjo na vrhu kupa. Hočem združiti dva kupa v en sortiran urejen kup, ki ne bo imel vidnih vrednosti kart.</p>
+<p><strong>Osnovni korak</strong> je, da izberemo manjšo od dveh trenutnih kart, vzamemo manjšo in jo položimo face down na <em>output</em> kup. Tako ostane večja karta še vedno na svojem kupu in nova se prikaže na tistem, kjer smo vzeli karto. Korak ponavljamo, dokler so karte na <em>input</em> kupih. Ko enega zmanjka, lahko drugega samo obrnemo in damo na output kup.</p>
+<section id="časovna-kompleksnost" class="level4">
+<h4 class="anchored" data-anchor-id="časovna-kompleksnost">Časovna kompleksnost</h4>
+<p>Vsak osnovni korak vzame konstantno veliko časa, ker samo primerjamo dve karti. Če imata kupa na začetku vsak <span class="math inline">\(n/2\)</span> kart, potem je število osnovnih korakov vsaj <span class="math inline">\(n/2\)</span> (če ima en kup vse manjše karte od drugega, potem moramo primerjati samo vsako karto iz tega kupa in nato obrniti karte iz drugega in jih dodati v output).</p>
+<p>Največ je <span class="math inline">\(n\)</span> korakov, saj moramo primerjati vsako karto (oziroma <span class="math inline">\(n-1\)</span> korakov, saj zadnje karte ni treba primerjati, ker ostane samo še en kupček). Lahko rečemo, da vzame merging nekje med <span class="math inline">\(n/2\)</span> in <span class="math inline">\(n\)</span> korakov, kar je skoraj <span class="math inline">\(n\)</span>, to pa pomeni, da je časovna odvisnot <span class="math inline">\(\Theta(n)\)</span>.</p>
+</section>
+</section>
+<section id="potek-merge-sort-algoritma" class="level3">
+<h3 class="anchored" data-anchor-id="potek-merge-sort-algoritma">Potek merge sort algoritma</h3>
+<p>Začnemo z glavnim delom - <strong>MERGE</strong>.</p>
+<pre><code>0  MERGE(A, p, q, r)
+
+1    nL = q - p + 1 // dolžina A[p:q]
+2    nR = r - q     // dolžina A[q+1:r]
+3    let L[0:nL - 1] and R[0:nR - 1] be new arrays
+-
+4    for i = 0 to nL - 1 // copy A[p:q] into L[0:nL-1]
+5       L[i] = A[p+1]
+6    for j = 0 to nR - 1 // copy A[q+1:r] into R[0:nR-1]
+7        R[j] = A[q+j+1]
+-
+8    i = 0 // i indexes the smallest remaining element in L
+9    j = 0 // j indexes the smallest remaining element in R
+10   k = p // k indexes the location in A to fill
+-
+11   // As long as each of the arrays L and R contains an unmerged element
+-    // copy the smallest unmerged element back into A[p:r]
+12   while i &lt; nL and j &lt; nR
+13      if L[i] &lt;= R[j]
+14          A[k] = L[i]
+15          i++
+16      else A[k] = R[j]
+17          j ++
+18      k++
+-
+19   // having gone through one of L and R entirely, cope the remainder of
+-    // of the other to the end of A[p:r]
+20  while i &lt; nL
+21      A[k] = L[i]
+22      i++
+23      k++
+24  while j &lt; nR
+25      A[k] = R[j]
+26      j++
+27      k++</code></pre>
+<p>Podseznama <span class="math inline">\(A[p:q]\)</span> in <span class="math inline">\(A[q+1:r]\)</span> kopira v tmp seznama L in R (left, right), nato združi vrednosti iz L in R nazaj v <span class="math inline">\(A[p:r]\)</span>. Nato vrstica 3 ustvari seznama L in R, dolžine nL in nR. For loop na vrsticah 4-5 kopira podseznam <span class="math inline">\(A[p:q]\)</span> v L in for loop na vrsticah 6-7 kopira podseznam <span class="math inline">\(A[q+1:r]\)</span> v R.</p>
+<p>Vrstice 8-18 opravljajo osnovni korak. While loop na vrsticah 12-18 vsakič znova najde najmanjšo vrednost v L ali R, ki se mora kopirati nazaj v <span class="math inline">\(A[p:r]\)</span>. Indeks k nosi položaj v <span class="math inline">\(A\)</span>, ki se bo zapolnil, indeksa i in j pa nosita položaj elementa v L in R.</p>
+<p>Ščasoma se cel L ali R kopira nazaj v <span class="math inline">\(A[p:r]\)</span> in loop se ustavi. Če se ustavi, ker je bil npr. cel R kopiran nazaj, je to zato, ker pogoj na vrstici 12 ne drži več za j. Še vedno pa velja, da je <span class="math inline">\(i &lt; nL\)</span>, torej se mora še nek del L kopirati nazaj in vse te vrednosti so največje med L in R elementi.</p>
+<p>V tem primeru loop na 20-23 kopira te ostale elemente iz L na zadnjih nekaj položajev od <span class="math inline">\(A[p:r]\)</span>. Ker je <span class="math inline">\(j=nR\)</span>, se loop na 24-27 izvede 0-krat.</p>
+<section id="časovna-zahtevnost" class="level4">
+<h4 class="anchored" data-anchor-id="časovna-zahtevnost">Časovna zahtevnost</h4>
+<p>Da bi videl, da je časovna zahtevnost algoritma res <span class="math inline">\(\Theta(n)\)</span>, kjer je <span class="math inline">\(n=r-p+1\)</span>, vidi, da vrstice 1-3 in 8-10 delajo konstantno časa in for loop na 4-7 teče <span class="math inline">\(\Theta(nL+nR) = \Theta(n)\)</span> časa.</p>
+<p>Vsaka iteracija while loopov na 12-18, 20-23 in 24-27 kopira natanko en element iz L ali R nazaj v A in vsaka vrednost je kopirana v A natanko enkrat. To pomeni, da je število korakov vseh treh loopov skupaj natanko <span class="math inline">\(n\)</span>. Ker vzame vsaka iteracija konstantno veliko časa, je časovna zahtevnost teh loopov <span class="math inline">\(\Theta(n)\)</span>.</p>
+<hr>
+<p>Zdaj lahko <strong>MERGE</strong> del uporabimo kot <em>subroutine</em> v merge sort algoritmu.</p>
+<pre><code>0 MERGE-SORT(A, p, r)
+-
+1   if p &gt;= r             // zero or one element?
+2       return
+-
+3   q = floor((p+r)/2)    // midpoint of A[p:r]
+4   MERGE-SORT(A, p, q)   // recursively sort A[p:q]
+5   MERGE-SORT(A, q+1, r) // recursively sort A[q+1:r]
+-
+6   // Merge A[p:q] and A[q+1:r] into A[p:r]
+7   MERGE(A, p, q, r)</code></pre>
+<p>Base case je, ko je p enak r (podseznam ima samo en element in je sortiran), drugače mora veljati <span class="math inline">\(p \leq r\)</span> in MERGE-SORT izvede divide, conquer, combine korake. Divide korak izračuna nov q indeks, ki razdeli <span class="math inline">\(A[p:r]\)</span> v nova podseznama, oba z <span class="math inline">\(n/2\)</span> elementov.</p>
+<p>Primer za 8 elementov (n = 8):</p>
+<pre><code>         12,3,7,9,14,6,11,2
+
+      12,3,7,9       14,6,11,2
+
+    12,3    7,9     14,6    11,2
+
+   12   3  7   9   14   6  11   2
+
+    3,12    7,9     6,14    2,11
+
+      3,7,9,12       2,6,11,14
+
+         2,3,6,7,9,11,12,14</code></pre>
+<p>Časovna odvisnost je torej <span class="math inline">\(\Theta(n)\)</span></p>
+</section>
+</section>
+</section>
+<section id="analiziranje-časovne-odvisnosti-deli-in-vladaj-algoritmov" class="level2">
+<h2 class="anchored" data-anchor-id="analiziranje-časovne-odvisnosti-deli-in-vladaj-algoritmov">Analiziranje časovne odvisnosti deli-in-vladaj algoritmov</h2>
+<p>Rekurzivne klice funkcij opišemo z <em>recurrence</em> enačbami. Naj bo zdaj <span class="math inline">\(T(n)\)</span> worst-case running time na problemu velikosti <span class="math inline">\(n\)</span>. Če je problem dovolj majhen, npr. za <span class="math inline">\(n &lt; n_{0}\)</span> za nek <span class="math inline">\(n_{0} &gt; 0\)</span>, vzame rešitev konstantno veliko časa, torej <span class="math inline">\(\Theta(1)\)</span>.</p>
+<p>Naj pa delitev problema poda <span class="math inline">\(a-\)</span>mnogo podproblemov, vsak velikosti <span class="math inline">\(n/b\)</span>, torej <span class="math inline">\(1/b\)</span> velikosti originalnega problema.</p>
+<blockquote class="blockquote">
+<p>Za merge sort je vsak podproblem velikosti <span class="math inline">\(n/2\)</span>, torej <span class="math inline">\(1/2\)</span> originalnega problema.</p>
+</blockquote>
+<p>Zdaj vzame <span class="math inline">\(T(n/b)\)</span>, da se reši en podproblem (velikosti <span class="math inline">\(n/b\)</span>), torej vzame <span class="math inline">\(a \times T(n/b)\)</span> časa, da se rešijo vsi. Če vzame <span class="math inline">\(D(n)\)</span> časa, da se problem razdeli na podprobleme in <span class="math inline">\(C(n)\)</span> časa, da se podproblemi združijo v rešitev, dobimo to recurrence enačbo:</p>
+<p><span class="math display">\[
+T(n) = \begin{cases}
+\Theta(1); &amp;n &lt; n_{0} \\
+D(n) + a \times T(n/b) + C(n); &amp;n \geq n_{0}
+\end{cases}
+\]</span></p>
+<section id="analiziranje-časovne-zahtevnosti-merge-sort" class="level3">
+<h3 class="anchored" data-anchor-id="analiziranje-časovne-zahtevnosti-merge-sort">Analiziranje časovne zahtevnosti merge sort</h3>
+<p>Worst-case running time za merge sort:</p>
+<ul>
+<li><strong>Divide</strong>: ta korak samo izračuna sredino (pod)seznama, kar je konstantno, torej je <span class="math inline">\(D(n) = \Theta(1)\)</span>.</li>
+<li><strong>Conquer:</strong> Rekurzivno reši dva podproblema, vsak velikosti <span class="math inline">\(n/2\)</span>, kar je potem <span class="math inline">\(2 \times t(n/2)\)</span>.</li>
+<li><strong>Combine:</strong> MERGE postopek na seznamu <span class="math inline">\(n\)</span> elementov potrebuje <span class="math inline">\(\Theta(n)\)</span> časa, torej je <span class="math inline">\(C(n) = \Theta(n)\)</span>.</li>
+</ul>
+<p>Recurrence enačba je zdaj enaka <span class="math inline">\(T(n) = \Theta(1) + 2 \times T(n/2) + \Theta(n)\)</span>. Ker je <span class="math inline">\(\Theta(1) + \Theta(n)\)</span> lineana funkcija <span class="math inline">\(n\)</span>, vzamemo samo <span class="math inline">\(\Theta(n)\)</span>. Reccurence enačba za worst-case merge-sort je torej:</p>
+<p><span class="math display">\[
+T(n) = 2 \times T(n/2) + \Theta(n)
+\]</span></p>
+<blockquote class="blockquote">
+<p>Glej poglavje 4 za master theorem.</p>
+</blockquote>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
