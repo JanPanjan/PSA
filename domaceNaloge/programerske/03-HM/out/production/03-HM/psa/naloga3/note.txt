@@ -1,0 +1,65 @@
+======================
+==== HASH TABLE 1 ====
+======================
+
+- ključi so cela števila; lahko tudi negativna
+- ključe shranjujemo v seznam int[2000] data
+- hash function h(x) = (x × 701) % 2000 (pazi na negativna števila?)
+- indeks mora bit v [0, 1999]
+- insert vstavi celo število v data; vrne bool
+- search najde celo število v data; vrne bool
+- delete izbriše celo število iz data; vrne bool
+- collisions rešujemo z veriženjem, ne s povezanim seznamom ampak razpršeno tabelo HashTable2
+
+-------------------
+---- VERIŽENJE ----
+-------------------
+
+hash funkcija izračuna indeks za key za v data. če je mesto
+zasedeno, je ponavadi tam nek linked list vspostavljen in išče
+naslednje prosto mesto aka null rep, kamor se bo vstavil.
+v našem primeru bo tam drugi hash table, ki ima nek array.
+
+int[] data = [HashTable2,HashTable2,HashTable2,...,HashTable2]
+
+oz.
+
+int[] data = [[0,0,0,...,0],
+              [0,0,0,...,0],
+              [0,0,0,...,0],
+              ...,
+              [0,0,0,...,0]]
+
+Ko hočemo shranit key na nek indeks v data, v bistvu hočemo
+shranit v nek HashTable2 na tem indeksu.
+
+======================
+==== HASH TABLE 2 ====
+======================
+
+- ključi so cela števila; lahko tudi negativna
+- ključe shranjujemo v seznam int[100] data
+- hash function h(x) = (x × 53) % 100 (pazi na negativna števila?)
+- indeks mora bit v [0, 99]
+- insert vstavi celo število v data; vrne bool; če je tabela polna, false
+- search najde celo število v data; vrne bool
+- delete izbriše celo število iz data; vrne bool
+- collisions rešujemo z linearnim naslavljanjem
+
+-------------------------------
+---- LINEARNO NASLAVLJANJE ----
+-------------------------------
+
+imaš nek array. s hash funckijo izračunaš indeks kamor se mora
+shranit nek key. če je mesto zasedeno, najde naslednje prosto
+mesto v arrayu. če ni prostih mest, ga ne shrani.
+
+int[] data = [0,0,0,...,0] - vsa mesta so prazna
+
+int[] data = [0,1,0,...,0] - na indexu data[1] je shranjen nek key
+če hočemo shraniti nek drugi key na to mesto, ga ne moremo, ampak
+ga shranimo na mesto data[2] = data[1+1].
+
+v najslabšem primeru, moramo key shraniti na mesto data[n-1], kjer
+n je velikost data.  objektivno slabši primer je, ko števila sploh
+ne moremo shraniti v array.

@@ -1,6 +1,5 @@
 package psa.naloga3;
 
-import psa.naloga3.SkipList;
 import junit.framework.TestCase;
 
 /**
