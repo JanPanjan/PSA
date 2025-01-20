@@ -70,12 +70,12 @@ public class Prim {
 		return sum;
 	}
 
-	public int minWeigthNode(int key[], Boolean[] pregledana) {
+	public int minWeigthNode(int key[], boolean[] checked) {
 		int min = Integer.MAX_VALUE;
 		int minIndex = -1;
 
 		for (int i = 0; i < this.n; i++) {
-			if (pregledana[i] == false && key[i] < min) {
+			if (!checked[i] && key[i] < min) {
 				min = key[i];
 				minIndex = i;
 			}
@@ -89,41 +89,37 @@ public class Prim {
 	 * P[i]. Predpostavimo, da je starš korena `s` vedno enak 0, torej
 	 * P[s] = 0.
 	 * @param s vozlišče, ki predstavlja koren drevesa
-	 * @return int kopico, ki predstavlja minimalno vpeto drevo s korenom v s
+	 * @return integer array, ki predstavlja minimalno vpeto drevo s korenom v s
 	 */
 	public int[] prim(int s) {
-		if (s > this.n) {
+		if (s >= this.n) {
 			throw new IllegalArgumentException("s ne more bit večji kot n cmon...");
 		}
-		// sprehodi se čez vsa vozlišča in med njimi poišče ustreznega
-		int[] mst = new int[this.n];
-		int[] key = new int[this.n];
-		Boolean[] pregledana = new Boolean[this.n];
 
-		// na začetku so vsa nepregledana
+		int[] parents = new int[this.n];
+		int[] key = new int[this.n];
+		boolean[] checked = new boolean[this.n];
+
+		// Initializira vse ključe (uteži) in postavi vsa vozlišča na false (nepregledana)
 		for (int i = 0; i < this.n; i++) {
 			key[i] = Integer.MAX_VALUE;
-			pregledana[i] = false;
+			checked[i] = false;
 		}
 
-		// s vozlišče je prvo v mst
 		key[s] = 0;
-		mst[s] = -1;
+		parents[s] = 0; //  s je sam sebi starš, zato je 0
 
 		for (int i = 0; i < this.n; i++) {
-			// najde node z min utež, med nodes, ki še
-			// niso vključeni v mst
-			int u = minWeigthNode(key, pregledana);
-			pregledana[u] = true;
+			int u = minWeigthNode(key, checked);
+			checked[u] = true;
 
-			// najde naslednjo povezavo
 			for (int v = 0; v < this.n; v++) {
-				if (this.data[u][v] != 0 && pregledana[v] == false && this.data[u][v] < key[v]) {
-					mst[v] = u;
+				if (this.data[u][v] != 0 && !checked[v] && this.data[u][v] < key[v]) {
+					parents[v] = u;
 					key[v] = this.data[u][v];
 				}
 			}
 		}
-		return mst;
+		return parents;
 	}
 }
